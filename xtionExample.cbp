@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="xtionExample" />
+		<Option makefile_is_custom="1" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Option virtualFolders="src/;build config/;" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/$(PROJECT_NAME)_debug" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="bin" />
+				<Option object_output="obj/Debug/" />
+				<Option external_deps="../../../libs/openFrameworksCompiled/lib/linuxarmv7l/libopenFrameworksDebug.a;" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option projectLinkerOptionsRelation="2" />
+			</Target>
+			<Target title="Release">
+				<Option output="bin/$(PROJECT_NAME)" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="bin" />
+				<Option object_output="obj/Release/" />
+				<Option external_deps="../../../libs/openFrameworksCompiled/lib/linuxarmv7l/libopenFrameworks.a;" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option projectLinkerOptionsRelation="2" />
+			</Target>
+		</Build>
+		<Unit filename="addons/ofxOpenNI2Grabber/src/DepthSource.cpp" />
+		<Unit filename="addons/ofxOpenNI2Grabber/src/DepthSource.h" />
+		<Unit filename="addons/ofxOpenNI2Grabber/src/DeviceController.cpp" />
+		<Unit filename="addons/ofxOpenNI2Grabber/src/DeviceController.h" />
+		<Unit filename="addons/ofxOpenNI2Grabber/src/IRSource.cpp" />
+		<Unit filename="addons/ofxOpenNI2Grabber/src/IRSource.h" />
+		<Unit filename="addons/ofxOpenNI2Grabber/src/RGBSource.cpp" />
+		<Unit filename="addons/ofxOpenNI2Grabber/src/RGBSource.h" />
+		<Unit filename="addons/ofxOpenNI2Grabber/src/ofxOpenNI2Grabber.cpp" />
+		<Unit filename="addons/ofxOpenNI2Grabber/src/ofxOpenNI2Grabber.h" />
+		<Unit filename="addons/ofxOpenNI2Grabber/src/ofxOpenNI2GrabberSettings.h" />
+		<Unit filename="addons/ofxOpenNI2Grabber/src/ofxOpenNI2Recorder.cpp" />
+		<Unit filename="addons/ofxOpenNI2Grabber/src/ofxOpenNI2Recorder.h" />
+		<Unit filename="config.make">
+			<Option virtualFolder="build config" />
+		</Unit>
+		<Unit filename="src/main.cpp">
+			<Option virtualFolder="src/" />
+		</Unit>
+		<Unit filename="src/testApp.cpp">
+			<Option virtualFolder="src/" />
+		</Unit>
+		<Unit filename="src/testApp.h">
+			<Option virtualFolder="src/" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
