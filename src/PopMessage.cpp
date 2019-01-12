@@ -1,7 +1,6 @@
 #include "PopMessage.h"
 
-PopMessage::PopMessage()
-{
+PopMessage::PopMessage() {
 	willDraw 		= false;
 	startTime 		= ofGetElapsedTimeMillis();
 	endTime			= startTime + 1000;
@@ -13,17 +12,15 @@ PopMessage::PopMessage()
 	verdana48.setLetterSpacing(1.037);
 };
 
-void PopMessage::update()
-{
-	if (ofGetElapsedTimeMillis() >  endTime){
+void PopMessage::update() {
+	if (ofGetElapsedTimeMillis() >  endTime) {
 		willDraw 		= false;
 		bTimerReached 	= true;
 	}
 }
 
-void PopMessage::draw()
-{
-	if(willDraw){
+void PopMessage::draw() {
+	if (willDraw) {
 		ofEnableAlphaBlending();
 		ofColor textColor(ofColor::red);
 		ofSetColor(24,24,24);
@@ -37,7 +34,7 @@ void PopMessage::draw()
 	}
 }
 
-void PopMessage::showMessage(float duration, string message){
+void PopMessage::showMessage(float duration, string message) {
 	startTime 		= ofGetElapsedTimeMillis();
 	endTime 		= startTime + duration;
 	messageString 	= message;

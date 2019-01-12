@@ -7,7 +7,8 @@
 #include "ofxXmlSettings.h"
 #include "PopMessage.h"
 
-class testApp : public ofBaseApp{
+class ofApp : public ofBaseApp {
+
 	public:
 		void setup();
 		void update();
@@ -59,7 +60,7 @@ class testApp : public ofBaseApp{
 		PopMessage statusMessage;
 
 
-vector<int> bins;
+		vector<int> bins;
 		int binCount;
 		int binWidth;
 		float damping;

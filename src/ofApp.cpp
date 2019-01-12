@@ -1,7 +1,7 @@
-#include "testApp.h"
+#include "ofApp.h"
 #include "ofConstants.h"
 //--------------------------------------------------------------
-void testApp::setup(){
+void ofApp::setup() {
 	ofBackground(0, 0, 0, 128);
 	ofTrueTypeFont::setGlobalDpi(72);
 
@@ -68,7 +68,7 @@ void testApp::setup(){
 
 }
 
-void testApp::saveXMLSettings(){
+void ofApp::saveXMLSettings() {
 	XML.setValue("settings:calculateActivity", calculateActivity?"true":"false");
 	XML.setValue("settings:mirror", mirrorThreshold?"true":"false");
 	XML.setValue("settings:findContours", findContours?"true":"false");
@@ -85,7 +85,7 @@ void testApp::saveXMLSettings(){
 }
 
 //--------------------------------------------------------------
-void testApp::update(){
+void ofApp::update() {
 	if (isReady)
 	{
 		oniGrabber.update();
@@ -113,7 +113,7 @@ void testApp::update(){
 
     if(calculateActivity)
     {
-        for(uint i = 0; i < bins.size(); i++){
+        for(uint i = 0; i < bins.size(); i++) {
             bins[i] = floor( grayImage.countNonZeroInRegion(i*binWidth,0,binWidth,settings.height) / binWidth);
         }
     }
@@ -123,7 +123,7 @@ void testApp::update(){
 
 
 //--------------------------------------------------------------
-void testApp::draw(){
+void ofApp::draw() {
 
     ofSetColor(255,255,255);
     ofBackground(0,0,0);
@@ -230,7 +230,7 @@ void testApp::draw(){
 }
 
 //--------------------------------------------------------------
-void testApp::emptyBins()
+void ofApp::emptyBins()
 {
 	for(uint i = 0; i < bins.size(); i++)
 	{
@@ -239,7 +239,7 @@ void testApp::emptyBins()
 }
 
 //--------------------------------------------------------------
-void testApp::exit()
+void ofApp::exit()
 {
 	ofLogVerbose() << "\n EXITING, be patient - takes some time \n";
 	
@@ -256,7 +256,7 @@ void testApp::exit()
 	
 }
 //--------------------------------------------------------------
-void testApp::keyPressed(int key)
+void ofApp::keyPressed(int key)
 {
 	// if (key == 'r')
 	// {
@@ -269,7 +269,7 @@ void testApp::keyPressed(int key)
 
 	switch (key) {
 		case 's':
-			//if(ofGetKeyPressed(OF_KEY_LEFT_CONTROL)){
+			//if(ofGetKeyPressed(OF_KEY_LEFT_CONTROL)) {
 				message = "Saving settings";
 				statusMessage.showMessage(4000, message);
 				cout << "saving settings" << endl;
@@ -374,24 +374,24 @@ void testApp::keyPressed(int key)
 }
 
 //--------------------------------------------------------------
-void testApp::keyReleased(int key){
+void ofApp::keyReleased(int key) {
 
 }
 
 //--------------------------------------------------------------
-void testApp::mouseDragged(int x, int y, int button){
+void ofApp::mouseDragged(int x, int y, int button) {
 }
 //--------------------------------------------------------------
-void testApp::mouseReleased(int x, int y, int button){
+void ofApp::mouseReleased(int x, int y, int button) {
 }
 
 //--------------------------------------------------------------
-void testApp::mouseMoved(int x, int y){}
+void ofApp::mouseMoved(int x, int y) {}
 //--------------------------------------------------------------
-void testApp::mousePressed(int x, int y, int button){}
+void ofApp::mousePressed(int x, int y, int button) {}
 //--------------------------------------------------------------
-void testApp::windowResized(int w, int h){}
+void ofApp::windowResized(int w, int h) {}
 //--------------------------------------------------------------
-void testApp::gotMessage(ofMessage msg){}
+void ofApp::gotMessage(ofMessage msg) {}
 //--------------------------------------------------------------
-void testApp::dragEvent(ofDragInfo dragInfo){}
+void ofApp::dragEvent(ofDragInfo dragInfo) {}

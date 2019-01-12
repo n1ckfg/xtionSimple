@@ -1,10 +1,9 @@
-#ifndef popmessageH
-#define popmessageH
+#pragma once
 
 #include "ofMain.h"
 
-class PopMessage
-{
+class PopMessage {
+
 	private:
 	    float endTime;
 		float startTime;
@@ -22,4 +21,3 @@ class PopMessage
 
 };
 
-#endif
