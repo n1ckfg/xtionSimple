@@ -5,21 +5,19 @@ void ofApp::setup() {
 	ofBackground(0, 0, 0, 128);
 	ofTrueTypeFont::setGlobalDpi(72);
 
-	message = "loading appSettings.xml";
+	message = "loading settings.xml";
     
-    if( XML.loadFile("appSettings.xml") )
-    {
-		message = "appSettings.xml loaded!";
-	}else
-	{
-		message = "unable to load mySettings.xml check data/ folder";
+    if(XML.loadFile("settings.xml")) {
+		message = "settings.xml loaded!";
+	} else {
+		message = "unable to load settings.xml check data/ folder";
 	}
 	statusMessage.showMessage(6000, message);
 	//cout << message << endl;
 
-	settings.width 	= 320;
-	settings.height = 240;
-	settings.fps 	= 30;
+	settings.width 	= XML.getValue("settings:width",320);
+	settings.height = XML.getValue("settings:height",240);
+	settings.fps 	= XML.getValue("settings:fps",30);;
 
 	settings.doDepth 	= ofToBool(XML.getValue("settings:doDepth", "true"));
 	settings.doRawDepth = ofToBool(XML.getValue("settings:doRawDepth", "false")) ;
@@ -54,8 +52,7 @@ void ofApp::setup() {
 	grayThreshFar.allocate(settings.width, settings.height);
 
 	isReady = oniGrabber.setup(settings);
-	if(enableRecorder)
-	{
+	if (enableRecorder) {
 		recorder.setup(&oniGrabber);
 	}
 	oniGrabber.depthSource.setDepthClipping(nearClip,farClip);
@@ -64,8 +61,6 @@ void ofApp::setup() {
 	binWidth = floor(settings.width / binCount);
 	bins.resize(binCount);
 	emptyBins();
-
-
 }
 
 void ofApp::saveXMLSettings() {
@@ -86,15 +81,12 @@ void ofApp::saveXMLSettings() {
 
 //--------------------------------------------------------------
 void ofApp::update() {
-	if (isReady)
-	{
+	if (isReady) {
 		oniGrabber.update();
-		grayImage.setFromPixels(oniGrabber.depthSource.noAlphaPixels->getPixels(),320,240);
+		grayImage.setFromPixels(oniGrabber.depthSource.noAlphaPixels->getPixels(), settings.width, settings.height);
 		grayImage.mirror(false,mirrorThreshold);
 
-
-		if(thresholdWithOpenCV)
-		{
+		if (thresholdWithOpenCV) {
 			grayThreshNear = grayImage;
 			grayThreshFar  = grayImage;
 			grayThreshNear.threshold(nearThreshold, true);
@@ -102,17 +94,14 @@ void ofApp::update() {
 			cvAnd(grayThreshNear.getCvImage(), grayThreshFar.getCvImage(), grayImage.getCvImage(), NULL);
 		}
 
-
 		grayImage.flagImageChanged();
 
-		if(findContours)
-		{
+		if (findContours) {
 			contourFinder.findContours(grayImage, 10, (settings.width*settings.height)/2, 3, false , true);
 		}
 	}
 
-    if(calculateActivity)
-    {
+    if (calculateActivity) {
         for(uint i = 0; i < bins.size(); i++) {
             bins[i] = floor( grayImage.countNonZeroInRegion(i*binWidth,0,binWidth,settings.height) / binWidth);
         }
@@ -121,47 +110,37 @@ void ofApp::update() {
     statusMessage.update();
 }
 
-
 //--------------------------------------------------------------
 void ofApp::draw() {
-
     ofSetColor(255,255,255);
     ofBackground(0,0,0);
 
-	if (isReady)
-	{
-		if(drawOni)
-		{
+	if (isReady) {
+		if (drawOni) {
 			oniGrabber.draw();
 		}
 
-		if(drawThresholded)
-		{
+		if (drawThresholded) {
 			grayImage.draw(0,0);
 		}
 
-		if (settings.doColor && drawColor)
-		{
+		if (settings.doColor && drawColor) {
 			ofTexture& color = oniGrabber.getRGBTextureReference();
 			color.draw(color.getWidth(), 0);
 		}
 
-		if(settings.doIr)
-		{
+		if (settings.doIr) {
 			ofTexture& ir = oniGrabber.getIRTextureReference();
-			ir.draw(320 + ir.getWidth(), 0);
+			ir.draw(settings.width + ir.getWidth(), 0);
 		}
 
-		if(findContours)
-		{
+		if (findContours) {
 			contourFinder.draw(0, 0, settings.width, settings.height);
 		}
 
-        if(calculateActivity)
-        {
+        if(calculateActivity) {
         	fbo.begin();
-            for(uint i = 0; i < bins.size(); i++)
-            {
+            for (uint i = 0; i < bins.size(); i++) {
                 int bValue = useLowResValues? floor(bins[i]/8)*8 : bins[i];
                 ofPushMatrix();
                 ofNoFill();
@@ -178,30 +157,21 @@ void ofApp::draw() {
             ofDisableAlphaBlending();
         }
 	}
-
-
 	
-	if(enableRecorder)
-	{
+	if (enableRecorder) {
 		ofEnableAlphaBlending();
 		ofColor textColor(ofColor::green);
 		string recordingStatus = "Recording status: ";
-		if (recorder.isRecording)
-		{
+		if (recorder.isRecording) {
 			textColor = ofColor::red;
 			recordingStatus+= "RECORDING";
-		}else
-		{
+		} else {
 			recordingStatus+= "NOT RECORDING";
 		}
-
 
 		ofDrawBitmapStringHighlight(recordingStatus, 20, 420, ofColor(0, 0, 0, 128), textColor);
 		ofDisableAlphaBlending();
 	}
-
-	
-
 
 	stringstream reportStream;
 	reportStream
@@ -209,19 +179,16 @@ void ofApp::draw() {
 	<< "set far threshold " << farThreshold << "  ( press:  f F )" << endl
 	<< "set near clipping " << nearClip << " ( press: + - )" << endl
 	<< "set far clipping " << farClip << " ( press: < > )" << endl 
-	<< " " << endl
-	;
+	<< " " << endl;
 	
-	if( settings.doColor)
-	{
+	if (settings.doColor) {
 		reportStream << "draw Color (press r)"  << endl;
 	}
 
 	reportStream
 	<< "find & draw Contours " << (findContours?"yes":"no")   << " ( press: c )" << endl
 	<< "draw Threshold " << (drawThresholded?"yes":"no") << " ( press: t )" << endl
-	<< "threshWithOpenCV " << thresholdWithOpenCV << " ( press: d )" << endl
-	;
+	<< "threshWithOpenCV " << thresholdWithOpenCV << " ( press: d )" << endl;
 	
 	ofDrawBitmapStringHighlight(ofToString(ofGetFrameRate()) + " fps", 20, 300, ofColor(0, 0, 0, 128), ofColor::yellow);
 	ofDrawBitmapStringHighlight(reportStream.str(), 20, 320, ofColor(0, 0, 0, 128), ofColor::yellow);
@@ -230,34 +197,28 @@ void ofApp::draw() {
 }
 
 //--------------------------------------------------------------
-void ofApp::emptyBins()
-{
-	for(uint i = 0; i < bins.size(); i++)
-	{
+void ofApp::emptyBins() {
+	for (uint i = 0; i < bins.size(); i++) {
   		bins[i] = 0; // set value using index
 	}
 }
 
 //--------------------------------------------------------------
-void ofApp::exit()
-{
+void ofApp::exit() {
 	ofLogVerbose() << "\n EXITING, be patient - takes some time \n";
 	
-	if(enableRecorder)
-	{
+	if (enableRecorder) {
 		ofLogVerbose() << "\n CLosing Recorder\n";
 		recorder.close();
 	}
 
-	if (isReady)
-	{
+	if (isReady) {
 		oniGrabber.close();
 	}
 	
 }
 //--------------------------------------------------------------
-void ofApp::keyPressed(int key)
-{
+void ofApp::keyPressed(int key) {
 	// if (key == 'r')
 	// {
 	// 	recorder.startRecording();

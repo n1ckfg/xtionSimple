@@ -59,7 +59,6 @@ class ofApp : public ofBaseApp {
 		ofTrueTypeFont	verdana48;
 		PopMessage statusMessage;
 
-
 		vector<int> bins;
 		int binCount;
 		int binWidth;

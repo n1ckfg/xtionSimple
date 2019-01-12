@@ -1,4 +1,7 @@
 <settings>
+    <width>640</width>
+    <height>480</height>
+    <fps>30</fps>
     <doColor>false</doColor>
     <doDepth>true</doDepth>
     <doRawDepth>true</doRawDepth>
